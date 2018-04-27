@@ -1,0 +1,34 @@
+Opis struktur:
+
+msgbuf - zawiera typ wiadomości, jej treść oraz ID użytkownika wysyłającego wiadomość
+służące do odsyłania wiadomości zwrotnej.
+
+users[9] - tablica zawierająca informacje o każdym z użytkowników :
+login, hasło, jego ID i zmienną boolowską czy zalogowany.
+
+group[3] - tablica zawierająca informacje o każdej z grup :
+jej nazwę, licznik osób do niej zapisanych oraz tablice  członków groupMember[9],
+która zawiera nazwę i nr ID członka grupy.
+
+Opis protokołu komunikacji:
+
+Klient po uruchomieniu tworzy swoją kolejkę o unikalnym ID, z której odbiera
+komunikaty sewera oraz kolejkę serwera, na którą bedzie wysyłał swoje komunikaty.
+Następnie wysyła do sewera sygnał o zalogowaniu.
+(Wszyscy użytkownicy komunikują się z sewerem wysyłając wiadomości pod ten sam
+nr i typ kolejki dlatego konieczne było zachowanie struktury komend w postaci 
+wywołań w jednej linii, np. login 'username' 'password', aby uniknąć błędów.)
+Cały program klienta to funkcje mające za zadanie kolejno:
+pobrać wiadomość od serwera, pobrać input od użytkownika, wysłać ten input do serwera,
+gdzie zostanie on zinterpretowany jako odpowiednia komenda.
+
+Sewer po uruchomieniu tworzy swoją własną kolejkę, z której odczytuje zapytania 
+wszystkich zalogowanych użytkowników.
+Ze struktury msg_buf.senderID odczytuje ID klienta wysyłającego i na to ID odsyła
+wiadomość zwrotną, chyba że zostanie wystosowane zapytanie o wysłanie wiadomości do innego
+użytkownika. Wtedy przeszukana zostaje struktura użytkowników i po znalezieniu 
+odbiorcy jest do niego wysyłana wiadomość o innym niż wiadomości serwera typie 10
+(te serwera mają typ 1).
+Użytkownik, jeżeli jest zalogowany otrzyma wiadomośc i może ją odczytać za pomocą komendy read.
+Wiadomości od użytkowników i grup wyświetlane za pomocą tej komendy są pokazywane chronologicznie,
+aż do opróżnienia 'skrzynki'.
