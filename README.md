@@ -1,6 +1,4 @@
 # Linux pipe chat
-Linux local chat using pipes
-------------------------------------------------------------------------------------------
 Program należy skompilować za pomocą skyptu compile.sh, a następnie uruchomić 
 serwer komendą ./serwer i dowolną ilość klientów za pomocą ./klient.
 
